@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Button } from 'evergreen-ui';
 
 class PostIndex extends Component {
   componentDidMount() {
     this.props.getAll()
   }
   render() {
-    console.log(this.props.list);
     return (
-      <div>this is post page.</div>
+      <div><Button appearance="primary" intent="success">this is evergreen button</Button>this is post page.</div>
     )
   }
 }
