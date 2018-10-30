@@ -1,0 +1,19 @@
+$headerHeight: 80px;
+$headerBg: #47B881;
+
+.container {
+  height: 100%;
+  header {
+    height: $headerHeight;
+    line-height: $headerHeight;
+    background: $headerBg;
+    padding: 0 20px;
+    display: flex;
+  }
+  main {
+    width: 60%;
+    height: calc(100% - #{$headerHeight});
+    margin: 0 auto;
+    margin-top: 20px;
+  }
+}

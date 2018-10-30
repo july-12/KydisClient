@@ -5,15 +5,11 @@ import { HashRouter, Route, Switch } from "react-router-dom";
 
 import models from '../models'
 
+import '../style/index.scss'
+
+import Layout from '../views/layouts';
+import About from '../views/about';
 import PostIndex from '../views/posts';
-
-const Layout = (props) => {
-  return <div className="container">{ props.children } </div>
-}
-
-const About = () => {
-  return <div> this is about page </div>
-}
 
 let store = init({
   models

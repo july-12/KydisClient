@@ -15,8 +15,8 @@ export default {
           const res = await axios.get(API.posts)
           if(res.status === 200) {
             let list = [
-              {id: 1, title: 'hot pot', content: 'nice food', categoryId: 1, createAt: '10:10:10'},
-              {id: 2, title: 'effective javascript', content: 'nice book', categoryId: 2, createAt: '12:12:12'}
+              { id: 1, title: 'cook', color: 'red' },
+              { id: 2, title: 'book', color: 'tal'}
             ]
             this.save({ list })
           }
