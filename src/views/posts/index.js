@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Button, Icon, Pane, SelectMenu, Table, Popover, Menu, Dialog } from 'evergreen-ui';
+import { Button, Icon, Pane, SelectMenu, Table, Popover, Menu, Dialog } from 'evergreen-ui'
 
 class PostIndex extends Component {
   constructor(props) {
@@ -20,7 +20,7 @@ class PostIndex extends Component {
       <div className="posts">
         { this._renderSearch() }
         { this._renderList() }
-        { this._renderDialog() }
+        { this._renderRemoveConfirmDialog() }
       </div>
     )
   }
@@ -36,6 +36,10 @@ class PostIndex extends Component {
 
     let categoryLabel = categoryFilter === 'all' ? 'Filter Category ...' : this.findCategoryTitle(+categoryFilter)
 
+    let redirectToCreate = () => {
+      this.props.history.replace('/posts/new')
+    }
+
     return (
       <Pane display="flex" height={40} marginBottom={20}>
         <Pane flex={1} alignItems="center" display="flex">
@@ -49,7 +53,7 @@ class PostIndex extends Component {
           </SelectMenu>
         </Pane>
         <Pane>
-          <Button appearance="primary" intent="success" iconBefore="add">Add New Post!</Button>
+          <Button appearance="primary" intent="success" iconBefore="add" onClick={redirectToCreate}>Add New Post!</Button>
         </Pane>
       </Pane>
     )
@@ -118,7 +122,7 @@ class PostIndex extends Component {
       </Popover>
     )
   }
-  _renderDialog = () => {
+  _renderRemoveConfirmDialog = () => {
     return (
       <Dialog
         title="Delete Confirm"

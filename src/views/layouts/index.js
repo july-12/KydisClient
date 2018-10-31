@@ -1,5 +1,4 @@
 import React from 'react'
-import { connect } from 'react-redux'
 
 import Header from './header.js'
 
@@ -10,10 +9,10 @@ const Layout = (props) => {
     <div className="container">
       <Header />
       <main>
-        { props.children }
+        <div style={{paddingTop: 20}}>{ props.children }</div>
       </main>
     </div>
   )
 }
 
-export default connect()(Layout)
+export default Layout

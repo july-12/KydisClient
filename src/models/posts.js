@@ -25,6 +25,12 @@ export default {
         }
      },
      async get(id) {
+        try {
+          const res = await axios.get(API.posts, { id })
+          console.log(res);
+        }catch(error) {
+          throw new Error(error)
+        }
      }
   }
 }

@@ -1,10 +1,12 @@
 import React from 'react'
+import { withRouter } from 'react-router-dom';
 import { Pane, Avatar } from 'evergreen-ui'
-export default () => {
+
+const Header = (props) => {
   return (
-    <header> 
+    <header>
       <Pane flex={1} alignItems="center" display="flex">
-         Kydis
+        <span style={{cursor: 'pointer'}} onClick={() => props.history.replace('/')}> Kydis </span>
       </Pane>
       <Pane>
         {/* Below you can see the marginRight property on a Button. */}
@@ -14,3 +16,5 @@ export default () => {
     </header>
   )
 }
+
+export default withRouter(Header)
