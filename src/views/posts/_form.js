@@ -14,6 +14,10 @@ class Form extends Component {
   }
   componentDidMount() {
     this.props.getCategories().then(() => {
+      if(this.props.post) {
+        let { title, content, category_id } = this.props.post
+        return this.setState({ title, content, category_id })
+      }
       this.setState({ category_id: this.props.categories[0].id })
     })
   }

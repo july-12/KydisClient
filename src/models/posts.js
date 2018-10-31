@@ -38,6 +38,20 @@ export default {
         }catch(error) {
           throw new Error(error)
         }
+     },
+     async update({ id, values }) {
+        try {
+          await axios.put(`${API.posts}/${id}`, { ...values })
+        }catch(error) {
+          throw new Error(error)
+        }
+     },
+     async delete(id) {
+        try {
+          await axios.delete(`${API.posts}/${id}`)
+        }catch(error) {
+          throw new Error(error)
+        }
      }
   }
 }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import dayjs from 'dayjs';
 import { Pane, Button, Heading, Text, Label, Textarea, Avatar, Badge } from 'evergreen-ui';
 
 const Comment = ({ comment }) => {
@@ -38,10 +39,10 @@ class PostShow extends Component {
           <Pane position="relative" marginBottom={20} borderBottom="1px solid #ddd">
             <Heading marginBottom={10} size={700} >{ post.title } </Heading>
             <Pane marginBottom={10}><Badge color="green"> { post.Category && post.Category.name } </Badge></Pane>
-            <Text> { post.createdAt } </Text>
+            <Text> { dayjs(post.createdAt).format('MMM`DD YYYY') } </Text>
             <Avatar position="absolute" top={-12} right={0} margin={20} name="R" size={40} />
           </Pane>
-          <Pane padding={20} minHeight={400} background="#F9F9FB" >
+          <Pane padding={20} minHeight={400} background="#F9F9FB" borderRadius={7}>
             <Text> { post.content } </Text>
           </Pane>
           <Pane marginTop={20} >

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Button, Icon, Pane, SelectMenu, Table, Popover, Menu, Dialog } from 'evergreen-ui'
+import dayjs from 'dayjs';
+import { Button, toaster, Icon, Pane, SelectMenu, Table, Popover, Menu, Dialog } from 'evergreen-ui'
 
 class PostIndex extends Component {
   constructor(props) {
@@ -8,7 +9,8 @@ class PostIndex extends Component {
     this.state = {
       keyword: '',
       categoryFilter: 'all',
-      showConfirm: false
+      showConfirm: false,
+      deletePostId: ''
     }
   }
   componentDidMount() {
@@ -16,7 +18,6 @@ class PostIndex extends Component {
     this.props.getPosts()
   }
   render() {
-  console.log(this.props.categories);
     return (
       <div className="posts">
         { this._renderSearch() }
@@ -24,6 +25,16 @@ class PostIndex extends Component {
         { this._renderRemoveConfirmDialog() }
       </div>
     )
+  }
+  handleDeletePost = () => {
+    let { deletePostId } = this.state
+    if(deletePostId) {
+      this.props.deletePost(deletePostId).then(() => {
+          this.props.getPosts()
+          this.setState({ showConfirm: false, deletePostId: '' })
+          toaster.success('Delete post successfully!', { duration: 2 })
+      })
+    }
   }
   findCategoryTitle = (id) => {
     let category = this.props.categories.find(c => c.id === id) || {}
@@ -33,7 +44,7 @@ class PostIndex extends Component {
     let { categoryFilter } = this.state
     let { categories } = this.props
 
-    let options = categories.map(label => ({ label: label.title, value: label.id.toString() }))
+    let options = categories.map(label => ({ label: label.name, value: label.id.toString() }))
     options.unshift({ label: 'All', value: 'all' })
 
     let categoryLabel = categoryFilter === 'all' ? 'Filter Category ...' : this.findCategoryTitle(+categoryFilter)
@@ -66,7 +77,7 @@ class PostIndex extends Component {
     const flexTitle = '50%'
 
     let filterPosts = posts.filter(post => {
-      return post.title.includes(keyword) && (categoryFilter === 'all' || post.categoryId === +categoryFilter)
+      return post.title.includes(keyword) && (categoryFilter === 'all' || post.category_id === +categoryFilter)
     })
     return (
       <Table>
@@ -77,10 +88,10 @@ class PostIndex extends Component {
             placeholder='Search by Title...'
           />
           <Table.TextHeaderCell>
-            category
+            Category
           </Table.TextHeaderCell>
           <Table.TextHeaderCell>
-            time
+            Create Time
           </Table.TextHeaderCell>
           <Table.TextHeaderCell />
         </Table.Head>
@@ -91,7 +102,7 @@ class PostIndex extends Component {
                 onClick={() => this.props.history.replace(`/posts/${post.id}`)}
                 flexBasis={flexTitle} flexShrink={0} flexGrow={0}>{post.title}</Table.TextCell>
               <Table.TextCell>{ this.findCategoryTitle(post.category_id) }</Table.TextCell>
-              <Table.TextCell>{post.createAt}</Table.TextCell>
+              <Table.TextCell>{ dayjs(post.createAt).format('MMM`DD')}</Table.TextCell>
               <Table.TextCell>
                 {this._renderOperation(post)}
               </Table.TextCell>
@@ -115,7 +126,7 @@ class PostIndex extends Component {
             </Menu.Group>
             <Menu.Divider />
             <Menu.Group title="destructive">
-              <Menu.Item icon="trash" intent="danger" onSelect={() => this.setState({ showConfirm: true })} >
+              <Menu.Item icon="trash" intent="danger" onSelect={() => this.setState({ showConfirm: true, deletePostId: post.id })} >
                 Delete
               </Menu.Item>
             </Menu.Group>
@@ -132,7 +143,8 @@ class PostIndex extends Component {
         title="Delete Confirm"
         isShown={this.state.showConfirm}
         intent="danger"
-        onCloseComplete={() => this.setState({ showConfirm: false })}
+        onCloseComplete={() => this.setState({ showConfirm: false, deletePostId: '' })}
+        onConfirm={this.handleDeletePost}
         confirmLabel="Delete"
       >
         Are you sure to delete this post ?
@@ -148,7 +160,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (({ posts, categories }) => ({
   getPosts: posts.getAll,
-  getCategories: categories.getAll
+  getCategories: categories.getAll,
+  deletePost: posts.delete
 }))
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostIndex)
