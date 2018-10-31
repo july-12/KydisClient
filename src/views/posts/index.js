@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Button, Pane, SelectMenu, Table } from 'evergreen-ui';
+import { Button, Icon, Pane, SelectMenu, Table, Popover, Menu, Dialog } from 'evergreen-ui';
 
 class PostIndex extends Component {
   constructor(props) {
     super(props)
     this.state = {
       keyword: '',
-      categoryFilter: 'all'
+      categoryFilter: 'all',
+      showConfirm: false
     }
   }
   componentDidMount() {
@@ -19,6 +20,7 @@ class PostIndex extends Component {
       <div className="posts">
         { this._renderSearch() }
         { this._renderList() }
+        { this._renderDialog() }
       </div>
     )
   }
@@ -53,16 +55,18 @@ class PostIndex extends Component {
     )
   }
   _renderList = () => {
-    let { keyword } = this.state
+    let { keyword, categoryFilter } = this.state
     let { posts } = this.props
     const flexTitle = '50%'
 
-    let filterPosts = posts.filter(post => post.title.includes(keyword))
+    let filterPosts = posts.filter(post => {
+      return post.title.includes(keyword) && (categoryFilter === 'all' || post.categoryId === +categoryFilter)
+    })
     return (
       <Table>
         <Table.Head height={50} background="#fff" >
           <Table.SearchHeaderCell
-            flexBasis={flexTitle} flexShrink={0} flexGrow={0} 
+            flexBasis={flexTitle} flexShrink={0} flexGrow={0}
             onChange={value => this.setState({ keyword: value.trim() })}
             placeholder='Search by Title...'
           />
@@ -72,6 +76,7 @@ class PostIndex extends Component {
           <Table.TextHeaderCell>
             time
           </Table.TextHeaderCell>
+          <Table.TextHeaderCell />
         </Table.Head>
         <Table.Body height={240}>
           {filterPosts.map(post => (
@@ -79,10 +84,51 @@ class PostIndex extends Component {
               <Table.TextCell flexBasis={flexTitle} flexShrink={0} flexGrow={0}>{post.title}</Table.TextCell>
               <Table.TextCell>{ this.findCategoryTitle(post.categoryId) }</Table.TextCell>
               <Table.TextCell>{post.createAt}</Table.TextCell>
+              <Table.TextCell>
+                {this._renderOperation()}
+              </Table.TextCell>
             </Table.Row>
           ))}
         </Table.Body>
       </Table>
+    )
+  }
+  _renderOperation = () => {
+    return (
+      <Popover
+        position={"bottom-right"}
+        content={
+          <Menu>
+            <Menu.Group title="Actions">
+              <Menu.Item icon="people">Share...</Menu.Item>
+              <Menu.Item icon="edit" secondaryText="⌘R">
+                Edit
+              </Menu.Item>
+            </Menu.Group>
+            <Menu.Divider />
+            <Menu.Group title="destructive">
+              <Menu.Item icon="trash" intent="danger" onSelect={() => this.setState({ showConfirm: true })} >
+                Delete
+              </Menu.Item>
+            </Menu.Group>
+          </Menu>
+        }
+      >
+        <Icon icon="more" size={10} />
+      </Popover>
+    )
+  }
+  _renderDialog = () => {
+    return (
+      <Dialog
+        title="Delete Confirm"
+        isShown={this.state.showConfirm}
+        intent="danger"
+        onCloseComplete={() => this.setState({ showConfirm: false })}
+        confirmLabel="Delete"
+      >
+        Are you sure to delete this post ?
+      </Dialog>
     )
   }
 }
