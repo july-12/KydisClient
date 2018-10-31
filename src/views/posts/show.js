@@ -27,18 +27,17 @@ const Comment = ({ comment }) => {
   )
 }
 class PostShow extends Component {
+  componentDidMount() {
+    let { id } = this.props.match.params
+    this.props.getPost(id)
+  }
   render() {
-    let post = { 
-      id: 1,
-      title: 'How to play baskeyball',
-      content: '1. you should like this activity, 2. make friends who like it as well as you like',
-      createdAt: '2018-10-31 15:30:00'
-    }
+    let { post } = this.props
     return (
       <Pane>
           <Pane position="relative" marginBottom={20} borderBottom="1px solid #ddd">
             <Heading marginBottom={10} size={700} >{ post.title } </Heading>
-            <Pane marginBottom={10}><Badge color="green">book</Badge></Pane>
+            <Pane marginBottom={10}><Badge color="green"> { post.Category && post.Category.name } </Badge></Pane>
             <Text> { post.createdAt } </Text>
             <Avatar position="absolute" top={-12} right={0} margin={20} name="R" size={40} />
           </Pane>

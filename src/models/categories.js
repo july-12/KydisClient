@@ -12,13 +12,9 @@ export default {
   effects: {
      async getAll() {
         try {
-          const res = await axios.get(API.posts)
+          const res = await axios.get(API.categories)
           if(res.status === 200) {
-            let list = [
-              { id: 1, title: 'cook', color: 'red' },
-              { id: 2, title: 'book', color: 'tal'}
-            ]
-            this.save({ list })
+            this.save({ list: res.data })
           }
         }catch(error) {
           throw new Error(error)

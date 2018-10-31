@@ -16,6 +16,7 @@ class PostIndex extends Component {
     this.props.getPosts()
   }
   render() {
+  console.log(this.props.categories);
     return (
       <div className="posts">
         { this._renderSearch() }
@@ -25,7 +26,8 @@ class PostIndex extends Component {
     )
   }
   findCategoryTitle = (id) => {
-    return this.props.categories.find(c => c.id === id).title
+    let category = this.props.categories.find(c => c.id === id) || {}
+    return category.name
   }
   _renderSearch = () => {
     let { categoryFilter } = this.state
@@ -88,7 +90,7 @@ class PostIndex extends Component {
               <Table.TextCell
                 onClick={() => this.props.history.replace(`/posts/${post.id}`)}
                 flexBasis={flexTitle} flexShrink={0} flexGrow={0}>{post.title}</Table.TextCell>
-              <Table.TextCell>{ this.findCategoryTitle(post.categoryId) }</Table.TextCell>
+              <Table.TextCell>{ this.findCategoryTitle(post.category_id) }</Table.TextCell>
               <Table.TextCell>{post.createAt}</Table.TextCell>
               <Table.TextCell>
                 {this._renderOperation(post)}

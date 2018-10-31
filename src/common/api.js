@@ -2,7 +2,8 @@ const BASE_URL = 'api/v1'
 const API = {}
 
 const urlMap = {
-  posts: `posts`
+  posts: `posts`,
+  categories: `categories`
 }
 
 for (let key in urlMap) {
