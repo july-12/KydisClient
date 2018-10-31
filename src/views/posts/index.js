@@ -84,12 +84,14 @@ class PostIndex extends Component {
         </Table.Head>
         <Table.Body height={240}>
           {filterPosts.map(post => (
-            <Table.Row key={post.id} borderBottom="none" isSelectable marginTop={8}>
-              <Table.TextCell flexBasis={flexTitle} flexShrink={0} flexGrow={0}>{post.title}</Table.TextCell>
+            <Table.Row key={post.id} borderBottom="none" isSelectable marginTop={8} >
+              <Table.TextCell
+                onClick={() => this.props.history.replace(`/posts/${post.id}`)}
+                flexBasis={flexTitle} flexShrink={0} flexGrow={0}>{post.title}</Table.TextCell>
               <Table.TextCell>{ this.findCategoryTitle(post.categoryId) }</Table.TextCell>
               <Table.TextCell>{post.createAt}</Table.TextCell>
               <Table.TextCell>
-                {this._renderOperation()}
+                {this._renderOperation(post)}
               </Table.TextCell>
             </Table.Row>
           ))}
@@ -97,7 +99,7 @@ class PostIndex extends Component {
       </Table>
     )
   }
-  _renderOperation = () => {
+  _renderOperation = (post) => {
     return (
       <Popover
         position={"bottom-right"}
@@ -105,7 +107,7 @@ class PostIndex extends Component {
           <Menu>
             <Menu.Group title="Actions">
               <Menu.Item icon="people">Share...</Menu.Item>
-              <Menu.Item icon="edit" secondaryText="⌘R">
+              <Menu.Item icon="edit" secondaryText="⌘R" onSelect={() => this.props.history.replace(`/posts/${post.id}/edit`)}>
                 Edit
               </Menu.Item>
             </Menu.Group>
