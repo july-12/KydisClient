@@ -24,7 +24,6 @@ export default {
      async get(id) {
         try {
           const res = await axios.get(`${API.posts}/${id}`)
-          console.log(res);
           if(res.status === 200) {
             this.save({ post: res.data })
           }
@@ -49,6 +48,14 @@ export default {
      async delete(id) {
         try {
           await axios.delete(`${API.posts}/${id}`)
+        }catch(error) {
+          throw new Error(error)
+        }
+     },
+     async createComment(payload) {
+        try {
+          let { id, content } = payload
+          await axios.post(`${API.posts}/${id}/comments`, { content })
         }catch(error) {
           throw new Error(error)
         }
