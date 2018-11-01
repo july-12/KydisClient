@@ -1,6 +1,6 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom';
-import { Pane, Avatar } from 'evergreen-ui'
+import { Pane, Avatar, Icon, Text } from 'evergreen-ui'
 
 const Header = (props) => {
   let redirectGithub = () => {
@@ -9,7 +9,7 @@ const Header = (props) => {
   return (
     <header>
       <Pane flex={1} alignItems="center" display="flex">
-        <span style={{cursor: 'pointer'}} onClick={() => props.history.replace('/')}> Kydis </span>
+        <Text fontSize={20} cursor='pointer' onClick={() => props.history.replace('/')}> <Icon icon="ninja" size={15}/> Kydis </Text>
       </Pane>
       <Pane>
         {/* Below you can see the marginRight property on a Button. */}

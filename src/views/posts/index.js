@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import dayjs from 'dayjs';
-import { Button, toaster, Icon, Pane, SelectMenu, Table, Popover, Menu, Dialog } from 'evergreen-ui'
+import { Button, toaster, Icon, Pane, SelectMenu, Table, Popover, Menu, Dialog, Heading } from 'evergreen-ui'
 
 class PostIndex extends Component {
   constructor(props) {
@@ -96,18 +96,19 @@ class PostIndex extends Component {
           <Table.TextHeaderCell />
         </Table.Head>
         <Table.Body height={240}>
-          {filterPosts.map(post => (
-            <Table.Row key={post.id} borderBottom="none" isSelectable marginTop={8} >
-              <Table.TextCell
-                onClick={() => this.props.history.replace(`/posts/${post.id}`)}
-                flexBasis={flexTitle} flexShrink={0} flexGrow={0}>{post.title}</Table.TextCell>
-              <Table.TextCell>{ this.findCategoryTitle(post.category_id) }</Table.TextCell>
-              <Table.TextCell>{ dayjs(post.createAt).format('MMM`DD')}</Table.TextCell>
-              <Table.TextCell>
-                {this._renderOperation(post)}
-              </Table.TextCell>
-            </Table.Row>
-          ))}
+          { filterPosts.length > 0 ? 
+            filterPosts.map(post => (
+              <Table.Row key={post.id} borderBottom="none" isSelectable marginTop={8} >
+                <Table.TextCell
+                  onClick={() => this.props.history.replace(`/posts/${post.id}`)}
+                  flexBasis={flexTitle} flexShrink={0} flexGrow={0}><Heading size={400}>{ post.title }</Heading></Table.TextCell>
+                <Table.TextCell>{ this.findCategoryTitle(post.category_id) }</Table.TextCell>
+                <Table.TextCell>{ dayjs(post.createAt).format('MMM`DD')}</Table.TextCell>
+                <Table.TextCell>
+                  {this._renderOperation(post)}
+                </Table.TextCell>
+              </Table.Row>
+            )) : <Pane height={400} display="flex" alignItems="center" justifyContent="center"> <Heading>There is no relative post ! </Heading> </Pane> }
         </Table.Body>
       </Table>
     )

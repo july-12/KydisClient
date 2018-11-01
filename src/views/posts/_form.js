@@ -81,6 +81,7 @@ class Form extends Component {
             Content:
           </Label>
           <Textarea
+            flex={1}
             height={200}
             width={600}
             id="content"
@@ -89,7 +90,7 @@ class Form extends Component {
             onChange={(e) => this.setState({ content: e.target.value })}
           />
         </Pane>
-        <Pane marginTop={30} marginLeft={110} >
+        <Pane marginTop={30} marginLeft={120} >
           <Button 
             width={100}
             display="inline-block" 
