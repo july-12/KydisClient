@@ -37,7 +37,7 @@ class PostShow extends Component {
       <React.Fragment>
          <Pane position="relative" marginBottom={20} borderBottom="1px solid #ddd">
            <Heading marginBottom={10} size={700} >{ post.title } </Heading>
-           <Pane marginBottom={10}><Badge color="green"> { post.Category && post.Category.name } </Badge></Pane>
+           <Pane marginBottom={10}><Badge color="green"> { post.category && post.category.name } </Badge></Pane>
            <Text> { dayjs(post.createdAt).format('MMM`DD YYYY') } </Text>
            <Avatar position="absolute" top={-12} right={0} margin={20} name="R" size={40} />
          </Pane>
